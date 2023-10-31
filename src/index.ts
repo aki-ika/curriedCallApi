@@ -52,7 +52,7 @@ type ExtractRes<T> = T extends { res: infer R } ? R : never;
 function callApi(baseURL:string) {
     return function <T extends keyof Api_t>(path: T) {
         return function (method: "post" | "get") {
-            return function <K extends keyof Api_t[T] & string>(endpoint: K) {
+            return function <K extends Extract<keyof Api_t[T], string>>(endpoint: K) {
                 return function (req: ExtractReq<Api_t[T][K]>) {
                     if(method === "post") {
                         return axios.post<ExtractRes<Api_t[T][K]>>(baseURL + path + endpoint, req)
